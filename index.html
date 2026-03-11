@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Practical Statistical Consulting — Companion Site</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:      #1a1a2e;
+      --ink-soft: #4a4a6a;
+      --page:     #faf9f6;
+      --cream:    #f3f0e8;
+      --accent:   #c8543a;
+      --accent2:  #2d6a8f;
+      --gold:     #d4a843;
+      --border:   #ddd8cc;
+      --card-bg:  #ffffff;
+      --mono:     'DM Mono', monospace;
+      --serif:    'DM Serif Display', serif;
+      --sans:     'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--page);
+      color: var(--ink);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--ink);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .header-texture {
+      position: absolute; inset: 0;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.04) 39px, rgba(255,255,255,.04) 40px),
+        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,.04) 39px, rgba(255,255,255,.04) 40px);
+      pointer-events: none;
+    }
+
+    .header-inner {
+      position: relative;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 72px 40px 64px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 40px;
+      align-items: end;
+    }
+
+    .book-badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 4px 12px;
+      border-radius: 2px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 3vw, 3.8rem);
+      line-height: 1.1;
+      font-weight: 400;
+      letter-spacing: -.01em;
+      margin-bottom: 16px;
+    }
+
+    h1 em { color: var(--gold); font-style: italic; }
+
+    .header-meta {
+      font-size: .9rem;
+      color: rgba(255,255,255,.55);
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .header-meta span { display: flex; align-items: center; gap: 6px; }
+
+    .book-cover {
+      width: 160px;
+      aspect-ratio: 2/3;
+      background: linear-gradient(135deg, #c8543a 0%, #8b1a1a 100%);
+      border-radius: 4px 8px 8px 4px;
+      box-shadow: -6px 8px 32px rgba(0,0,0,.5), inset 4px 0 8px rgba(255,255,255,.08);
+      display: flex;
+      align-items: flex-end;
+      padding: 20px 16px;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .book-cover::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 60%;
+      background: linear-gradient(180deg, rgba(255,255,255,.12) 0%, transparent 100%);
+    }
+
+    .book-cover-text {
+      position: relative;
+      font-family: var(--serif);
+      font-size: .7rem;
+      color: rgba(255,255,255,.9);
+      line-height: 1.3;
+    }
+
+    .book-cover-title { font-size: .85rem; margin-bottom: 4px; }
+    .book-cover-subtitle { opacity: .7; font-family: var(--sans); font-size: .62rem; }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,.06);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      gap: 0;
+    }
+
+    .nav-inner a {
+      font-size: .875rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+      text-decoration: none;
+      padding: 16px 20px;
+      border-bottom: 3px solid transparent;
+      transition: all .2s;
+      white-space: nowrap;
+    }
+
+    .nav-inner a:hover, .nav-inner a.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* ── MAIN ── */
+    main { max-width: 1100px; margin: 0 auto; padding: 64px 40px 120px; }
+
+    section { margin-bottom: 80px; }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      max-width: 40px;
+      height: 1px;
+      background: var(--accent);
+      opacity: .4;
+    }
+
+    h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 400;
+      margin-bottom: 12px;
+      color: var(--ink);
+    }
+
+    .section-intro {
+      font-size: 1rem;
+      color: var(--ink-soft);
+      max-width: 620px;
+      margin-bottom: 40px;
+      line-height: 1.7;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .about-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 32px;
+    }
+
+    .about-card h3 {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 400;
+      margin-bottom: 10px;
+    }
+
+    .about-card p { font-size: .92rem; color: var(--ink-soft); line-height: 1.7; }
+
+    /* ── DOWNLOAD GRID ── */
+    .dl-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .dl-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: box-shadow .2s, transform .2s;
+    }
+
+    .dl-card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,.1);
+      transform: translateY(-2px);
+    }
+
+    .dl-card-header {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .dl-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .icon-data   { background: #e8f4fd; }
+    .icon-code   { background: #edf7ed; }
+    .icon-pdf    { background: #fdf2ee; }
+    .icon-slides { background: #fef9e8; }
+
+    .dl-card-title { font-weight: 600; font-size: .95rem; margin-bottom: 2px; }
+    .dl-card-sub   { font-size: .8rem; color: var(--ink-soft); font-family: var(--mono); }
+
+    .dl-card-body {
+      padding: 16px 24px 20px;
+    }
+
+    .dl-card-desc { font-size: .88rem; color: var(--ink-soft); margin-bottom: 16px; line-height: 1.6; }
+
+    .file-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 12px;
+      background: var(--cream);
+      border-radius: 6px;
+      font-size: .83rem;
+    }
+
+    .file-name {
+      font-family: var(--mono);
+      color: var(--ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .file-size { color: var(--ink-soft); flex-shrink: 0; font-size: .78rem; }
+
+    .btn-dl {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--ink);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: .78rem;
+      font-family: var(--sans);
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background .15s;
+      flex-shrink: 0;
+    }
+
+    .btn-dl:hover { background: var(--accent); }
+    .btn-dl.accent { background: var(--accent); }
+    .btn-dl.accent:hover { background: #a84030; }
+
+    /* ── CHAPTER TABLE ── */
+    .chapter-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .9rem;
+    }
+
+    .chapter-table thead tr {
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .chapter-table th {
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 500;
+      font-size: .8rem;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .chapter-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .chapter-table tr:hover td { background: var(--cream); }
+    .chapter-table tr:last-child td { border-bottom: none; }
+
+    .ch-num {
+      font-family: var(--mono);
+      font-size: .8rem;
+      color: var(--ink-soft);
+      width: 60px;
+    }
+
+    .ch-title { font-weight: 500; }
+    .ch-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+
+    .tag {
+      font-size: .72rem;
+      padding: 2px 8px;
+      border-radius: 99px;
+      font-family: var(--mono);
+    }
+
+    .tag-data   { background: #e8f4fd; color: #1a5a8f; }
+    .tag-code   { background: #edf7ed; color: #1a6b2a; }
+    .tag-pdf    { background: #fdf2ee; color: #8f3020; }
+
+    .ch-actions { display: flex; gap: 8px; }
+
+    /* ── CITE ── */
+    .cite-box {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent2);
+      border-radius: 0 10px 10px 0;
+      padding: 24px 28px;
+      font-family: var(--mono);
+      font-size: .85rem;
+      line-height: 1.7;
+      color: var(--ink-soft);
+      position: relative;
+    }
+
+    .cite-box .copy-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--ink);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 10px;
+      font-size: .75rem;
+      cursor: pointer;
+      font-family: var(--sans);
+      transition: background .15s;
+    }
+
+    .cite-box .copy-btn:hover { background: var(--accent); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,.5);
+      text-align: center;
+      padding: 40px;
+      font-size: .85rem;
+    }
+
+    footer a { color: var(--gold); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    .footer-links { display: flex; gap: 24px; justify-content: center; margin-bottom: 12px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .header-inner { grid-template-columns: 1fr; padding: 48px 24px 40px; }
+      .book-cover { display: none; }
+      main { padding: 40px 24px 80px; }
+      .about-grid { grid-template-columns: 1fr; }
+      .nav-inner { overflow-x: auto; padding: 0 24px; }
+      .chapter-table { font-size: .8rem; }
+      .ch-tags, .ch-actions { display: none; }
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .anim { animation: fadeUp .5s ease forwards; opacity: 0; }
+    .anim-1 { animation-delay: .1s; }
+    .anim-2 { animation-delay: .2s; }
+    .anim-3 { animation-delay: .3s; }
+    .anim-4 { animation-delay: .4s; }
+  </style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header>
+  <div class="header-texture"></div>
+  <div class="header-inner">
+    <div>
+      <div class="book-badge">Companion Website</div>
+      <h1>Practical <em>Statistical Consulting</em><br>Learning From Everyday Cases Using R</h1>
+      <p style="color:rgba(255,255,255,.65); font-size:.95rem; max-width:540px; line-height:1.7;">
+        Download datasets, printable worksheets, R codes, and lecture slides to accompany every case study of the textbook.
+      </p>
+      <div class="header-meta">
+        <span>✦ Lei Hua</span>
+        <span>✦ TBA Press, 2026</span>
+        <span>✦ ISBN 978-0-000-00000-0</span>
+      </div>
+    </div>
+    <div class="book-cover" aria-hidden="true">
+      <div class="book-cover-text">
+        <div class="book-cover-title">Practical Statistical Consulting</div>
+        <div class="book-cover-subtitle">Learning From Everyday Cases Using R</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <div class="nav-inner">
+    <a href="#download" class="active">Download</a>
+    <a href="#cite">How to Cite</a>
+  </div>
+</nav>
+
+<!-- ══ MAIN ══ -->
+<main>
+
+  <!-- DOWNLOAD -->
+  <section id="download">
+    <div class="section-label">Download</div>
+    <h2>Worksheets & Datasets</h2>
+    <p class="section-intro">Worksheets and datasets used for case studies throughout the book.</p>
+
+    <div class="dl-grid">
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 01</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Effectiveness of Learning Formats</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/learning-format.PDF" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/learning-format.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 02</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Exercises on Blood Pressures</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/bp-measurements.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/bp-measurements.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 03</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Evaluating a New Blood Pressure Medication (Sample Size Calculation)</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/bp-measurements-samplesize.pdf" download>↓ PDF</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 04</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Impact of Dietary Supplements on Marathon Performance</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/supplement-marathon.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/supplement-marathon.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 05</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Innovative Teaching on Posttest Improvement</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/teaching-Pretest-Posttest.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/teaching-Pretest-Posttest.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 06</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Power Analysis for Innovative Teaching on Posttest Improvement</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/power-analysis-teaching.pdf" download>↓ PDF</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 07</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Factors on Housing Prices</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/housing-price.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/housing-price.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 08</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Evaluating Job Satisfaction in a Tech Company</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/job-satisfactory-ranks.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/job-satisfactory-ranks.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 09</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Effectiveness of Study Techniques on Quiz Performance</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/student-technique-quizscores.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/student-technique-quizscores.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 10</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Chip Thickness by Machines</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/chip-thickness-machines.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/chip-thickness-machines.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 11</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Examining Student Math Performance Across Schools</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/math-scores-among-schools.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/math-scores-among-schools.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 12</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Examining Student Math Performance in a School District</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/math-scores-among-schools.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/math-scores-among-schools.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 13</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Effectiveness of a Stress-Reduction Program</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/stress-reduction-program.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/stress-reduction-program.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 14</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Environmental Factors on Antler Length</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/forest-density-antler-length.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/forest-density-antler-length.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 15</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Salary Comparisons Between Technology and Finance Sectors</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/salary-between-industry.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/salary-between-industry.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 16</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Sleep Hygiene Practices on Sleep Quality</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/sleep-quality.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/sleep-quality.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 17</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Impact of Different Training Methods on Employee Performance</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/training-employee-performance.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/training-employee-performance.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 18</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Teaching Methods and Students Engagement Scores</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/teaching-methods-scores.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/teaching-methods-scores.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 19</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Student Psychological Well-being Survey</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/student-psychological-well-being-survey.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/student-psychological-well-being-survey.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 20</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Evaluating User Satisfaction with Three Software Interfaces</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/software-userinterface-survey.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/software-userinterface-survey.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 21</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Cognitive Training on Test Scores</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/cognitive-training-test-scores.pdf" download>↓ PDF</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 22</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Sport Brand Preference by Gender</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/sport-brand-preference-gender.pdf" download>↓ PDF</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 23</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Treatment Protocol and Adverse Reactions</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/treatment-protocol-adverse-reactions.pdf" download>↓ PDF</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 24</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Effectiveness of an Educational Intervention on Smoking Cessation</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/smoking-cessation-intervention.pdf" download>↓ PDF</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 25</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Advertisements and Purchase Intention</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/advertisements-purchase-intention.pdf" download>↓ PDF</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 26</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Drug Effects in Different Hospitals</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/drug-effects-different-hospitals.pdf" download>↓ PDF</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 27</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Job Satisfactory</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/job-satisfactory-department-salary.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/job-satisfactory-department-salary.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 28</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Assessing Customer Satisfaction with Product Features</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/assessing-customer-satisfaction-product-features.pdf" download>↓ PDF</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 29</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Assessing Customer Satisfaction with Product Features (subject-level)</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/features-like-dislike.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/features-like-dislike.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 30</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Career Choices Among College Students</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/career-choices.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/career-choices.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 31</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Customer Satisfaction Levels</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/customer-satisfactory.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/customer-satisfactory.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 32</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Analyzing Patient Satisfaction with Healthcare Services</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/patient-satisfaction-healthcare.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/patient-satisfaction-healthcare.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 33</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Effect of a Dietary Intervention on Cholesterol Levels</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/cholesterol-intervention.pdf" download>↓ PDF</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dl-card">
+        <div class="dl-card-header">
+          <div class="dl-icon icon-data">📃</div>
+          <div>
+            <div class="dl-card-title">CASE 34</div>
+            <div class="dl-card-sub"></div>
+          </div>
+        </div>
+        <div class="dl-card-body">
+          <p class="dl-card-desc">Study Environment Noise Level and Exam Confidence</p>
+          <ul class="file-list">
+            <li class="file-item">
+              <span class="file-name">Worksheet</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/noise-exam.pdf" download>↓ PDF</a>
+            </li>
+            <li class="file-item">
+              <span class="file-name">Dataset</span>
+              <span class="file-size"></span>
+              <a class="btn-dl" href="https://raw.githubusercontent.com/larryleihua/PSCBook/refs/heads/main/datasets/noise-exam.csv" download>↓ CSV</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- CITATION -->
+  <section id="cite">
+    <div class="section-label">Citation</div>
+    <h2>How to Cite</h2>
+    <p class="section-intro">Please use the following citation when using materials from this site in your work.</p>
+
+    <div class="cite-box">
+      <button class="copy-btn" onclick="copyCite(this)">Copy</button>
+      <p id="cite-text">
+        Hua, Lei (2026). <em>Practical Statistical Consulting: Learning From Everyday Cases Using R</em>.<br>
+        TBA Press. Companion website: https://larryleihua.github.io/PSCBook/refs/heads/
+      </p>
+    </div>
+
+    <p style="margin-top:16px; font-size:.85rem; color:var(--ink-soft);">BibTeX entry available in the <a href="https://github.com/larryleihua/PSCBook/refs/heads/blob/main/CITATION.bib" style="color:var(--accent2);">CITATION.bib</a> file in the repository.</p>
+  </section>
+
+</main>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-links">
+    <a href="https://github.com/larryleihua/textbook-data" target="_blank">GitHub Repository</a>
+    <a href="https://github.com/larryleihua/PSCBook/refs/heads/issues" target="_blank">Report an Issue</a>
+    <a href="mailto:authors@example.com">Contact Authors</a>
+  </div>
+  <p>© 2026 Lei Hua · All copyrights reserved.</p>
+  <p style="margin-top:6px; font-size:.78rem; opacity:.6;">Hosted on <a href="https://pages.github.com" target="_blank">GitHub Pages</a></p>
+</footer>
+
+<script>
+  // Smooth active nav highlight
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 80) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+
+  // Copy citation
+  function copyCite(btn) {
+    const text = document.getElementById('cite-text').innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy', 2000);
+    });
+  }
+</script>
+
+</body>
+</html>
