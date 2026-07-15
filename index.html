@@ -100,35 +100,19 @@
     .book-cover {
       width: 160px;
       aspect-ratio: 2/3;
-      background: linear-gradient(135deg, #c8543a 0%, #8b1a1a 100%);
       border-radius: 4px 8px 8px 4px;
-      box-shadow: -6px 8px 32px rgba(0,0,0,.5), inset 4px 0 8px rgba(255,255,255,.08);
-      display: flex;
-      align-items: flex-end;
-      padding: 20px 16px;
-      position: relative;
+      box-shadow: -6px 8px 32px rgba(0,0,0,.5);
       overflow: hidden;
       flex-shrink: 0;
+      background: #fff;
     }
 
-    .book-cover::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 60%;
-      background: linear-gradient(180deg, rgba(255,255,255,.12) 0%, transparent 100%);
+    .book-cover-image {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
-
-    .book-cover-text {
-      position: relative;
-      font-family: var(--serif);
-      font-size: .7rem;
-      color: rgba(255,255,255,.9);
-      line-height: 1.3;
-    }
-
-    .book-cover-title { font-size: .85rem; margin-bottom: 4px; }
-    .book-cover-subtitle { opacity: .7; font-family: var(--sans); font-size: .62rem; }
 
     /* ── NAV ── */
     nav {
@@ -466,11 +450,12 @@
         <span>✦ ISBN 978-1041163053</span>
       </div>
     </div>
-    <div class="book-cover" aria-hidden="true">
-      <div class="book-cover-text">
-        <div class="book-cover-title">Practical Statistical Consulting</div>
-        <div class="book-cover-subtitle">Learning From Everyday Cases Using R</div>
-      </div>
+    <div class="book-cover">
+      <img
+        class="book-cover-image"
+        src="PSCbook-cover.png"
+        alt="Practical Statistical Consulting book cover"
+      />
     </div>
   </div>
 </header>
