@@ -311,6 +311,122 @@
     .btn-dl.accent { background: var(--accent); }
     .btn-dl.accent:hover { background: #a84030; }
 
+
+    /* ── CASE FILTER ── */
+    .filter-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent2);
+      border-radius: 0 10px 10px 0;
+      padding: 20px 24px;
+      margin-bottom: 28px;
+    }
+
+    .filter-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .filter-title {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    .filter-mode { display: flex; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+
+    .mode-btn {
+      background: transparent;
+      border: none;
+      font-family: var(--sans);
+      font-size: .78rem;
+      color: var(--ink-soft);
+      padding: 5px 12px;
+      cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+
+    .mode-btn + .mode-btn { border-left: 1px solid var(--border); }
+    .mode-btn.is-on { background: var(--ink); color: #fff; }
+
+    .filter-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .fchip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      padding: 6px 14px 6px 12px;
+      font-size: .82rem;
+      color: var(--ink-soft);
+      cursor: pointer;
+      user-select: none;
+      transition: background .15s, border-color .15s, color .15s;
+    }
+
+    .fchip input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .fchip:hover { border-color: var(--accent2); }
+    .fchip:focus-within { outline: 2px solid var(--accent2); outline-offset: 2px; }
+
+    .fchip-abbr { font-family: var(--mono); font-size: .74rem; color: var(--accent2); }
+    .fchip-count { font-family: var(--mono); font-size: .7rem; opacity: .55; }
+
+    .fchip.is-on {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: #fff;
+    }
+
+    .fchip.is-on .fchip-abbr { color: var(--gold); }
+    .filter-bottom {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .filter-count { font-family: var(--mono); font-size: .78rem; color: var(--ink-soft); }
+
+    .filter-clear {
+      background: none;
+      border: none;
+      font-family: var(--sans);
+      font-size: .78rem;
+      color: var(--accent);
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0;
+    }
+
+    .filter-empty {
+      background: var(--cream);
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      padding: 28px;
+      text-align: center;
+      color: var(--ink-soft);
+      font-size: .9rem;
+      margin-bottom: 28px;
+    }
+
+    .dl-card[hidden] { display: none; }
+
+    @media (max-width: 768px) {
+      .filter-panel { padding: 16px; }
+      .fchip-text { display: none; }
+      .fchip { padding: 6px 12px; }
+    }
+
     /* ── CHAPTER TABLE ── */
     .chapter-table {
       width: 100%;
@@ -478,9 +594,75 @@
     <h2>Worksheets & Datasets</h2>
     <p class="section-intro">Worksheets and datasets are now available for download. If you are an instructor, please contact the author for teaching slides and R codes.</p>
 
+    <div class="filter-panel">
+      <div class="filter-top">
+        <span class="filter-title">Filter cases by data type</span>
+        <div class="filter-mode" role="group" aria-label="How to combine selected filters">
+          <button type="button" class="mode-btn is-on" data-mode="all">Match all</button>
+          <button type="button" class="mode-btn" data-mode="any">Match any</button>
+        </div>
+      </div>
+      <div class="filter-chips">
+        <label class="fchip" data-tag="con">
+          <input type="checkbox" value="con" />
+          <span class="fchip-abbr">Con</span>
+          <span class="fchip-text">Continuous response</span>
+          <span class="fchip-count" data-count="con">0</span>
+        </label>
+        <label class="fchip" data-tag="bin">
+          <input type="checkbox" value="bin" />
+          <span class="fchip-abbr">Bin</span>
+          <span class="fchip-text">Binary response</span>
+          <span class="fchip-count" data-count="bin">0</span>
+        </label>
+        <label class="fchip" data-tag="cat">
+          <input type="checkbox" value="cat" />
+          <span class="fchip-abbr">Cat</span>
+          <span class="fchip-text">Categorical response</span>
+          <span class="fchip-count" data-count="cat">0</span>
+        </label>
+        <label class="fchip" data-tag="ord">
+          <input type="checkbox" value="ord" />
+          <span class="fchip-abbr">Ord</span>
+          <span class="fchip-text">Ordinal response or covariates</span>
+          <span class="fchip-count" data-count="ord">0</span>
+        </label>
+        <label class="fchip" data-tag="tab">
+          <input type="checkbox" value="tab" />
+          <span class="fchip-abbr">Tab</span>
+          <span class="fchip-text">Contingency table</span>
+          <span class="fchip-count" data-count="tab">0</span>
+        </label>
+        <label class="fchip" data-tag="lik">
+          <input type="checkbox" value="lik" />
+          <span class="fchip-abbr">Lik</span>
+          <span class="fchip-text">Likert scale</span>
+          <span class="fchip-count" data-count="lik">0</span>
+        </label>
+        <label class="fchip" data-tag="cnt">
+          <input type="checkbox" value="cnt" />
+          <span class="fchip-abbr">Cnt</span>
+          <span class="fchip-text">Count response</span>
+          <span class="fchip-count" data-count="cnt">0</span>
+        </label>
+        <label class="fchip" data-tag="dep">
+          <input type="checkbox" value="dep" />
+          <span class="fchip-abbr">Dep</span>
+          <span class="fchip-text">Dependent responses (repeated measures / clusters)</span>
+          <span class="fchip-count" data-count="dep">0</span>
+        </label>
+      </div>
+      <div class="filter-bottom">
+        <span class="filter-count" id="filterCount">Showing all 36 cases</span>
+        <button type="button" class="filter-clear" id="filterClear" hidden>Clear filters</button>
+      </div>
+    </div>
+
+    <p class="filter-empty" id="filterEmpty" hidden>No case matches every selected type. Try “Match any”, or clear a filter.</p>
+
     <div class="dl-grid">
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="1" data-tags="con">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -505,7 +687,7 @@
         </div>
       </div>
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="2" data-tags="con dep">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -531,7 +713,7 @@
       </div>
 
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="3" data-tags="con">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -551,7 +733,7 @@
         </div>
       </div>
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="4" data-tags="con">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -576,7 +758,7 @@
         </div>
       </div>
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="5" data-tags="con">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -602,7 +784,7 @@
       </div>
 
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="6" data-tags="con">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -622,7 +804,7 @@
         </div>
       </div>
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="7" data-tags="con">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -647,7 +829,7 @@
         </div>
       </div>
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="8" data-tags="con ord">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -673,7 +855,7 @@
       </div>
 
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="9" data-tags="con dep">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -698,7 +880,7 @@
         </div>
       </div>
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="10" data-tags="con dep">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -723,7 +905,7 @@
         </div>
       </div>
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="11" data-tags="con dep">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -749,7 +931,7 @@
       </div>
 
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="12" data-tags="con dep">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -775,7 +957,7 @@
       </div>
 
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="13" data-tags="con dep">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -800,7 +982,7 @@
         </div>
       </div>
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="14" data-tags="con dep">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -826,7 +1008,7 @@
       </div>
 
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="15" data-tags="con">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -852,7 +1034,7 @@
       </div>
 
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="16" data-tags="con dep">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -877,7 +1059,7 @@
         </div>
       </div>
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="17" data-tags="con">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -903,7 +1085,7 @@
       </div>
 
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="18" data-tags="con">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -929,7 +1111,7 @@
       </div>
 
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="19" data-tags="con ord lik dep">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -954,7 +1136,7 @@
         </div>
       </div>
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="20" data-tags="ord lik dep">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -980,7 +1162,7 @@
       </div>
 
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="21" data-tags="con">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -1001,7 +1183,7 @@
       </div>
 
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="22" data-tags="bin tab">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -1021,7 +1203,7 @@
         </div>
       </div>
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="23" data-tags="bin tab">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -1042,7 +1224,7 @@
       </div>
 
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="24" data-tags="bin tab dep">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -1062,7 +1244,7 @@
         </div>
       </div>
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="25" data-tags="bin tab dep">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -1082,7 +1264,7 @@
         </div>
       </div>
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="26" data-tags="bin tab">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -1103,7 +1285,7 @@
       </div>
 
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="27" data-tags="bin">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -1128,7 +1310,7 @@
         </div>
       </div>
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="28" data-tags="bin tab dep">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -1148,7 +1330,7 @@
         </div>
       </div>
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="29" data-tags="bin tab dep">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -1174,7 +1356,7 @@
       </div>
 
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="30" data-tags="cat">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -1199,7 +1381,7 @@
         </div>
       </div>
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="31" data-tags="ord lik">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -1224,7 +1406,7 @@
         </div>
       </div>
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="32" data-tags="ord lik">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -1250,7 +1432,7 @@
       </div>
 
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="33" data-tags="ord tab dep">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -1270,7 +1452,7 @@
         </div>
       </div>
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="34" data-tags="ord lik">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -1295,7 +1477,7 @@
         </div>
       </div>
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="35" data-tags="cnt">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -1320,7 +1502,7 @@
         </div>
       </div>
 
-      <div class="dl-card">
+      <div class="dl-card" data-case="36" data-tags="cnt">
         <div class="dl-card-header">
           <div class="dl-icon icon-data">📃</div>
           <div>
@@ -1411,6 +1593,82 @@
       setTimeout(() => btn.textContent = 'Copy', 2000);
     });
   }
+
+  // ── Case filtering by data type ──
+  (function () {
+    const panel  = document.querySelector('.filter-panel');
+    if (!panel) return;
+    const cards  = Array.from(document.querySelectorAll('.dl-card[data-tags]'));
+    const chips  = Array.from(panel.querySelectorAll('.fchip'));
+    const boxes  = Array.from(panel.querySelectorAll('.fchip input'));
+    const modes  = Array.from(panel.querySelectorAll('.mode-btn'));
+    const countEl = document.getElementById('filterCount');
+    const clearEl = document.getElementById('filterClear');
+    const emptyEl = document.getElementById('filterEmpty');
+    let mode = 'all';
+
+    const tagsOf = c => c.dataset.tags.split(' ');
+
+    // Total cases carrying each tag (fixed, shown next to each chip)
+    panel.querySelectorAll('.fchip-count').forEach(el => {
+      el.textContent = cards.filter(c => tagsOf(c).includes(el.dataset.count)).length;
+    });
+
+    function apply() {
+      const picked = boxes.filter(b => b.checked).map(b => b.value);
+      let shown = 0;
+
+      cards.forEach(card => {
+        const t = tagsOf(card);
+        const ok = picked.length === 0 ? true
+                 : mode === 'all' ? picked.every(p => t.includes(p))
+                                  : picked.some(p => t.includes(p));
+        card.hidden = !ok;
+        if (ok) shown++;
+      });
+
+      chips.forEach(ch => ch.classList.toggle('is-on', ch.querySelector('input').checked));
+      countEl.textContent = picked.length === 0
+        ? 'Showing all ' + cards.length + ' cases'
+        : 'Showing ' + shown + ' of ' + cards.length + ' cases';
+      clearEl.hidden = picked.length === 0;
+      emptyEl.hidden = shown !== 0;
+
+      // Keep the selection in the URL so a filtered view can be shared
+      const url = new URL(window.location);
+      if (picked.length) {
+        url.searchParams.set('types', picked.join(','));
+        url.searchParams.set('match', mode);
+      } else {
+        url.searchParams.delete('types');
+        url.searchParams.delete('match');
+      }
+      history.replaceState(null, '', url);
+    }
+
+    boxes.forEach(b => b.addEventListener('change', apply));
+
+    modes.forEach(btn => btn.addEventListener('click', () => {
+      mode = btn.dataset.mode;
+      modes.forEach(m => m.classList.toggle('is-on', m === btn));
+      apply();
+    }));
+
+    clearEl.addEventListener('click', () => {
+      boxes.forEach(b => { b.checked = false; });
+      apply();
+    });
+
+    // Restore state from the URL on load
+    const params = new URLSearchParams(window.location.search);
+    const preset = (params.get('types') || '').split(',').filter(Boolean);
+    if (params.get('match') === 'any') {
+      mode = 'any';
+      modes.forEach(m => m.classList.toggle('is-on', m.dataset.mode === 'any'));
+    }
+    boxes.forEach(b => { b.checked = preset.includes(b.value); });
+    apply();
+  })();
 </script>
 
 </body>
